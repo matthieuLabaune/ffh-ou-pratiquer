@@ -1,0 +1,6 @@
+export const CONSTANTS = {
+  DEFAULT_SEARCH_RADIUS: 10, // km
+  MAX_SEARCH_RESULTS: 100,
+  CACHE_DURATION: 5 * 60 * 1000, // 5 minutes
+  DEBOUNCE_DELAY: 300, // ms
+};
