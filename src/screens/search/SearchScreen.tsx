@@ -31,6 +31,7 @@ type SearchScreenNavigationProp = CompositeNavigationProp<
 export default function SearchScreen() {
     const navigation = useNavigation<SearchScreenNavigationProp>();
     const scrollY = useRef(new Animated.Value(0)).current;
+    const flatListRef = useRef<FlatList>(null);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [structures, setStructures] = useState<Structure[]>([]);
@@ -120,7 +121,7 @@ export default function SearchScreen() {
     };
 
     const scrollToTop = () => {
-        // TODO: Scroll vers le haut
+        flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
     };
 
     const renderHeader = () => (
@@ -184,6 +185,7 @@ export default function SearchScreen() {
                     <LoadingSpinner />
                 ) : (
                     <FlatList
+                        ref={flatListRef}
                         data={structures}
                         renderItem={({ item, index }) => (
                             <StructureCard
