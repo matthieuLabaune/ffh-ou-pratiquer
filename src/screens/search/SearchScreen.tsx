@@ -232,7 +232,15 @@ export default function SearchScreen() {
                 </TouchableOpacity>
             )}
             {structures.length > 0 && !isLoading && (
-                <TouchableOpacity style={[styles.fab, styles.fabMap]}>
+                <TouchableOpacity 
+                    style={[styles.fab, styles.fabMap]}
+                    onPress={() => {
+                        const parent = navigation.getParent();
+                        if (parent) {
+                            parent.navigate('MapView', { structures });
+                        }
+                    }}
+                >
                     <MaterialCommunityIcons name="map" size={24} color="#FFFFFF" />
                 </TouchableOpacity>
             )}

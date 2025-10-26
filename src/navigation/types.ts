@@ -9,6 +9,9 @@ export type RootStackParamList = {
         searchResults?: Structure[];  // Tableau complet pour le swipe
         initialIndex?: number;  // Index de la structure actuelle
     };
+    MapView: {
+        structures?: Structure[];  // Structures à afficher sur la carte
+    };
     QuestionnaireStart: undefined;
     QuestionnaireResult: { submissionId: string };
 };

@@ -6,6 +6,7 @@ import { RootStackParamList } from './types';
 import MainNavigator from './MainNavigator';
 import AuthNavigator from './AuthNavigator';
 import StructureDetailScreen from '@/screens/structure/StructureDetailScreen';
+import MapViewScreen from '@/screens/map';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -24,6 +25,7 @@ export const RootNavigator = () => {
                     <>
                         <Stack.Screen name="Main" component={MainNavigator} />
                         <Stack.Screen name="StructureDetails" component={StructureDetailScreen} />
+                        <Stack.Screen name="MapView" component={MapViewScreen} />
                     </>
                 ) : (
                     <>
