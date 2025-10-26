@@ -1,0 +1,187 @@
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import {
+  DisciplineTag,
+  StructureCard,
+  SearchBar,
+  LoadingSpinner,
+  EmptyState,
+  ErrorMessage,
+} from '../components/common';
+import { colors, spacing } from '@/config/theme';
+
+// Données de test
+const mockPlaces = [
+  {
+    id: '1',
+    name: 'Club Omnisports de Paris',
+    address: '123 Rue de Rivoli',
+    city: 'Paris',
+    postalCode: '75001',
+    region: 'Île-de-France',
+    departement: 'Paris (75)',
+    disciplines: [
+      'Basketball',
+      'Handball',
+      'Football',
+      'Natation',
+      'Tennis',
+      'Hockey sur glace',
+      'Volleyball',
+      'Badminton',
+      'Athlétisme',
+    ],
+    distance: 1.5,
+  },
+  {
+    id: '2',
+    name: 'Centre Sportif du Nord',
+    address: '45 Avenue Jean Jaurès',
+    city: 'Lille',
+    postalCode: '59000',
+    region: 'Hauts-de-France',
+    departement: 'Nord (59)',
+    disciplines: ['Football', 'Basketball', 'Handball'],
+    distance: 0.8,
+  },
+  {
+    id: '3',
+    name: 'Stade Municipal',
+    address: '78 Boulevard des Sports',
+    city: 'Lyon',
+    postalCode: '69000',
+    region: 'Auvergne-Rhône-Alpes',
+    departement: 'Rhône (69)',
+    disciplines: ['Football', 'Rugby', 'Athlétisme'],
+    distance: 3.2,
+  },
+];
+
+export const ComponentsDemo = () => {
+  const [searchText, setSearchText] = useState('');
+  const [showLoading, setShowLoading] = useState(false);
+  const [showEmpty, setShowEmpty] = useState(false);
+  const [showError, setShowError] = useState(false);
+
+  return (
+    <ScrollView style={styles.container}>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Composants UI - Démo</Text>
+      </View>
+
+      {/* SearchBar */}
+      <View style={styles.section}>
+        <Text style={styles.label}>SearchBar</Text>
+        <SearchBar
+          value={searchText}
+          onChangeText={setSearchText}
+          placeholder="Rechercher une structure..."
+        />
+      </View>
+
+      {/* Discipline Tags */}
+      <View style={styles.section}>
+        <Text style={styles.label}>Discipline Tags</Text>
+        <View style={styles.tagsContainer}>
+          <DisciplineTag discipline="Basketball" />
+          <DisciplineTag discipline="Handball" />
+          <DisciplineTag discipline="Football" />
+          <DisciplineTag discipline="Hockey sur glace" />
+          <DisciplineTag discipline="Natation" />
+          <DisciplineTag discipline="Tennis" />
+          <DisciplineTag discipline="Autre sport" />
+        </View>
+      </View>
+
+      {/* Structure Cards */}
+      <View style={styles.section}>
+        <Text style={styles.label}>Structure Cards</Text>
+        {mockPlaces.map((place) => (
+          <StructureCard
+            key={place.id}
+            place={place}
+            onPress={() => console.log('Card pressed:', place.name)}
+          />
+        ))}
+      </View>
+
+      {/* Loading Spinner */}
+      <View style={styles.section}>
+        <Text style={styles.label}>Loading Spinner</Text>
+        <View style={styles.demoBox}>
+          <LoadingSpinner text="Recherche en cours..." size="large" />
+        </View>
+      </View>
+
+      {/* Empty State */}
+      <View style={styles.section}>
+        <Text style={styles.label}>Empty State</Text>
+        <View style={styles.demoBox}>
+          <EmptyState
+            icon="search"
+            title="Aucune structure trouvée"
+            message="Essayez d'élargir vos critères de recherche"
+          />
+        </View>
+      </View>
+
+      {/* Error Message */}
+      <View style={styles.section}>
+        <Text style={styles.label}>Error Message</Text>
+        <ErrorMessage
+          message="Une erreur est survenue lors de la recherche"
+          onRetry={() => console.log('Retry')}
+          type="error"
+        />
+        <ErrorMessage
+          message="Aucune connexion internet détectée"
+          type="warning"
+        />
+        <ErrorMessage
+          message="Veuillez activer la localisation pour voir les structures à proximité"
+          type="info"
+        />
+      </View>
+
+      <View style={{ height: 40 }} />
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+  section: {
+    marginVertical: theme.spacing.lg,
+  },
+  sectionTitle: {
+    ...theme.typography.h2,
+    color: theme.colors.text.primary,
+    marginHorizontal: theme.spacing.lg,
+    marginBottom: theme.spacing.md,
+  },
+  label: {
+    ...theme.typography.h3,
+    color: theme.colors.text.primary,
+    marginHorizontal: theme.spacing.lg,
+    marginBottom: theme.spacing.sm,
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: theme.spacing.sm,
+    marginHorizontal: theme.spacing.lg,
+  },
+  demoBox: {
+    height: 200,
+    backgroundColor: theme.colors.surface,
+    marginHorizontal: theme.spacing.lg,
+    borderRadius: theme.borderRadius.medium,
+    borderWidth: 1,
+    borderColor: theme.colors.borderLight,
+  },
+});
+
+export default ComponentsDemo;

@@ -23,15 +23,20 @@ type StructureDetailScreenNavigationProp = NativeStackNavigationProp<RootStackPa
 export default function StructureDetailScreen() {
     const route = useRoute<StructureDetailScreenRouteProp>();
     const navigation = useNavigation<StructureDetailScreenNavigationProp>();
-    const { structureId } = route.params;
+    const { structureId, structure: passedStructure } = route.params;
 
-    const [structure, setStructure] = useState<Structure | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [structure, setStructure] = useState<Structure | null>(passedStructure || null);
+    const [isLoading, setIsLoading] = useState(!passedStructure); // Ne charge que si pas de structure passée
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
-        loadStructure();
-    }, [structureId]);
+        // Charger uniquement si on n'a pas reçu la structure en paramètre
+        if (!passedStructure) {
+            loadStructure();
+        } else {
+            setIsFavorite(passedStructure.isFavorite || false);
+        }
+    }, [structureId, passedStructure]);
 
     const loadStructure = async () => {
         try {

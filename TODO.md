@@ -1,203 +1,192 @@
-# TODO - Prochaines Actions
+# TODO - État Actuel du Projet
 
-## Phase 1 : Configuration & Setup ✅ TERMINÉE
+## ✅ PHASES TERMINÉES
 
-### ⚡ Actions Immédiates (Aujourd'hui) ✅
+### Phase 0 : Préparation ✅ (100%)
+- Documentation complète
+- Architecture définie
+- Plan détaillé
 
-- [x] **Lire la documentation**
-  - [x] Parcourir README.md
-  - [x] Lire RECAP.md
-  - [x] Étudier docs/00-QUICK-START.md
+### Phase 1 : Setup ✅ (100%)
+- Dépendances installées
+- TypeScript configuré
+- Structure projet créée
+- ESLint/Prettier configurés
 
-### 🔧 Setup Initial (Jour 1 - 2-3h) ✅
+### Phase 2 : API Layer ✅ (100%)
+- Client HTTP (fetch natif)
+- 4 Services API créés
+- Modèles TypeScript complets
+- Utilitaires (storage, validation, format, location)
 
-- [x] **Installer les dépendances principales**
-  ```bash
-  cd /Users/matt/Documents/sites/ffh-ou-pratiquer
-  npm install zustand
-  npm install @react-navigation/native @react-navigation/native-stack @react-navigation/bottom-tabs
-  npm install react-native-paper
-  npm install react-native-vector-icons
-  npm install axios
-  npm install react-native-maps
-  npm install react-native-dotenv
-  npm install --save-dev @types/react-native-dotenv
-  npx expo install react-native-screens react-native-safe-area-context
-  npx expo install expo-location expo-secure-store
-  npx expo install expo-linking expo-web-browser
-  ```
-  ✅ **FAIT - Toutes les dépendances installées**
+### Phase 3 : State Management ✅ (100%)
+- 5 Stores Zustand créés
+- 6 Custom Hooks créés
+- Intégration API + Store
+- Persistence données
 
-- [x] **Configurer TypeScript**
-  - [x] Ajuster tsconfig.json (voir docs/00-QUICK-START.md)
-  - [x] Créer types/env.d.ts
-  - ⚠️ Vérifier compilation: `npx tsc --noEmit` (TypeScript installation à corriger - non bloquant)
+### Phase 4 : Navigation ✅ (100%)
+- Bottom Tabs fonctionnels
+- 4 Écrans créés
+- Navigation testée et validée
+- UI React Native Paper
 
-- [x] **Configurer Babel**
-  - [x] Mettre à jour babel.config.js avec module-resolver
-  - [x] Configurer react-native-dotenv
-
-- [x] **Configurer ESLint & Prettier**
-  - [x] Créer .eslintrc.js
-  - [x] Créer .prettierrc
-  - [x] Disponible: `npm run lint`
-
-### 📁 Structure (Jour 1 - 30min) ✅
-
-- [x] **Créer la structure src/**
-  ```bash
-  mkdir -p src/{api,components/{common,structure,map},config,data,hooks,models,navigation,screens/{home,search,structure,account,questionnaire,settings},store,utils}
-  mkdir -p types
-  ```
-  ✅ **FAIT**
-
-- [x] **Créer les fichiers index.ts**
-  ```bash
-  touch src/components/common/index.ts
-  touch src/components/structure/index.ts
-  touch src/components/map/index.ts
-  touch src/hooks/index.ts
-  touch src/store/index.ts
-  ```
-  ✅ **FAIT**
-
-### ⚙️ Configuration de Base (Jour 1-2 - 2h) ✅
-
-- [x] **Créer les fichiers de config**
-  - [x] src/config/api.config.ts (exemple dans docs/07-CODE-EXAMPLES.md)
-  - [x] src/config/theme.config.ts (exemple fourni)
-  - [x] src/config/constants.ts
-  - [x] types/env.d.ts
-
-- [x] **Mettre à jour .env**
-  - [x] Ajouter l'URL de votre API backend
-  - [x] Ajouter les clés API (Google Maps, etc.)
-
-### 🧪 Tests de Base (Jour 2 - 1h) ✅
-
-- [x] **Créer App.tsx minimal** (exemple dans docs/07-CODE-EXAMPLES.md)
-
-- [ ] **Tester le démarrage**
-  ```bash
-  npm start
-  ```
-  ⚠️ **À TESTER MANUELLEMENT**
-
-- [ ] **Vérifier que tout fonctionne**
-  - [ ] App démarre sans erreur
-  - [ ] TypeScript compile
-  - [ ] ESLint passe
-  - [ ] Test sur iOS simulator ou Expo Go
-  - [ ] Test sur Android emulator ou Expo Go
-
-### ✅ Critères de Fin de Phase 1
-
-- [x] Toutes les dépendances installées
-- [x] TypeScript configuré et fonctionnel
-- [x] Structure src/ créée
-- [x] Configuration de base en place
-- [ ] App démarre sans erreur (à tester manuellement avec `npm start`)
-- [ ] Tests manuels passent
-
-**📄 Voir PHASE1-COMPLETE.md pour le résumé détaillé**
+### Phase 5 : Composants UI ✅ (100%)
+- Design System créé (theme.ts)
+- DisciplineTag component
+- StructureCard component
+- SearchBar component
+- LoadingSpinner component
+- EmptyState component
+- ErrorMessage component
+- ComponentsDemo screen pour tests
 
 ---
 
-## Phase 2 : API Layer (ACTUEL - PROCHAIN)
+## 🔄 PHASE ACTUELLE - Phase 6 : Home & Settings
 
-### À faire après Phase 1 ✅
+### À Développer
 
-- [ ] **Client Axios** (src/api/client.ts)
-- [ ] **Modèles TypeScript** (src/models/)
-- [ ] **Services API** (src/api/)
-- [ ] **Tests API**
+- [ ] **Écran Home complet**
+  - [ ] Header avec logo
+  - [ ] Carte interactive (optionnel)
+  - [ ] Recherche rapide
+  - [ ] Suggestions de structures
 
-**Détails dans:** docs/06-ROADMAP.md - Phase 2
-
----
-
-## Phase 3 : State Management
-
-- [ ] **Stores Zustand**
-- [ ] **Custom Hooks**
-- [ ] **Tests**
-
-**Détails dans:** docs/06-ROADMAP.md - Phase 3
+- [ ] **Écran Settings**
+  - [ ] Configuration API
+  - [ ] Préférences utilisateur
+  - [ ] À propos
 
 ---
 
-## Notes & Références
+## 📊 PROGRESSION GLOBALE
 
-### Documentation à Consulter
+**6 phases sur 11 terminées = 55%**
 
-1. **Pour la configuration initiale:**
-   - docs/00-QUICK-START.md (guide complet étape par étape)
-
-2. **Pour comprendre l'architecture:**
-   - docs/04-ARCHITECTURE.md (patterns et exemples)
-
-3. **Pour les exemples de code:**
-   - docs/07-CODE-EXAMPLES.md (code prêt à copier)
-
-4. **Pour suivre le plan:**
-   - docs/06-ROADMAP.md (toutes les phases)
-
-### Commandes Rapides
-
-```bash
-# Projet
-cd /Users/matt/Documents/sites/ffh-ou-pratiquer
-
-# Démarrer
-npm start
-
-# Lint & Format
-npm run lint
-npm run format
-
-# TypeScript
-npx tsc --noEmit
-
-# Tests
-npm test
-```
-
-### Liens Utiles
-
-- [Expo Docs](https://docs.expo.dev/)
-- [React Navigation](https://reactnavigation.org/)
-- [Zustand](https://github.com/pmndrs/zustand)
-- [React Native Paper](https://callstack.github.io/react-native-paper/)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
-
----
-
-## 🎯 Objectif Actuel
-
-**Terminer Phase 1 (Setup) dans les 2-3 prochains jours**
-
-Une fois Phase 1 terminée, mettre à jour ce fichier pour passer à Phase 2.
-
----
-
-## 📊 Progression
-
-- [x] Phase 0 : Préparation (✅ Complété)
-- [x] Phase 1 : Setup (✅ Complété - 95% - Tests manuels restants)
-- [ ] Phase 2 : API Layer (🔄 Prochain)
-- [ ] Phase 3 : State Management
-- [ ] Phase 4 : Navigation
-- [ ] Phase 5 : Composants UI
-- [ ] Phase 6 : Home & Settings
+- [x] Phase 0 : Préparation
+- [x] Phase 1 : Setup
+- [x] Phase 2 : API Layer
+- [x] Phase 3 : State Management
+- [x] Phase 4 : Navigation
+- [x] Phase 5 : Composants UI
+- [ ] Phase 6 : Home & Settings ← **PROCHAIN**
 - [ ] Phase 7 : Où Pratiquer (MVP)
 - [ ] Phase 8 : Compte
 - [ ] Phase 9 : Features Additionnelles
 - [ ] Phase 10 : Polish & Testing
 - [ ] Phase 11 : Production
 
-**Progression globale:** 18% (2/11 phases)
+---
+
+## 🎨 Design System
+
+### Thème créé basé sur l'app Flutter
+- Couleurs (noir/blanc/gris)
+- Typographie
+- Espacements
+- Border radius
+- Shadows
+- Couleurs par discipline
+
+### Composants UI disponibles
+✅ DisciplineTag - Tags colorés pour disciplines
+✅ StructureCard - Card pour afficher une structure
+✅ SearchBar - Barre de recherche
+✅ LoadingSpinner - Indicateur de chargement
+✅ EmptyState - État vide
+✅ ErrorMessage - Message d'erreur
 
 ---
 
-Dernière mise à jour : 22 Octobre 2025
-Prochaine révision : Après Phase 1
+## 🎯 PROCHAINES ACTIONS
+
+### Immédiat (Phase 6)
+
+1. Créer écran Home avec vraie UI
+2. Créer écran Settings
+3. Intégrer les composants UI
+4. Ajouter navigation vers détails
+
+### Court Terme (Phase 7)
+
+5. Implémenter écran Où Pratiquer
+6. Intégrer API de recherche
+7. Ajouter filtres
+8. Ajouter vue carte
+
+---
+
+## 📝 NOTES
+
+### Design Guide
+- Voir `DESIGN-GUIDE.md` pour référence complète
+- Basé sur l'app Flutter originale
+- Thème noir/blanc avec AppBar noire
+
+### App Actuelle
+
+**Fichier :** `App.tsx`
+- Navigation Bottom Tabs ✅
+- 4 écrans ✅
+- Composants UI testés via ComponentsDemo ✅
+- Fonctionne parfaitement ✅
+
+### Composants Créés (Phase 5)
+```
+src/
+├── config/
+│   └── theme.ts           ← Design tokens
+├── components/
+│   └── common/
+│       ├── DisciplineTag.tsx
+│       ├── StructureCard.tsx
+│       ├── SearchBar.tsx
+│       ├── LoadingSpinner.tsx
+│       ├── EmptyState.tsx
+│       ├── ErrorMessage.tsx
+│       └── index.ts
+└── screens/
+    └── ComponentsDemo.tsx  ← Démo des composants
+```
+
+### Quand Backend Prêt
+
+On pourra :
+- Réactiver les stores Zustand
+- Ajouter authentification réelle
+- Intégrer API structures
+- Séparer navigation en fichiers
+
+### Backend Mock
+
+- Mock auth actif dans `src/store/authStore.ts`
+- À retirer quand backend opérationnel
+- Voir `MOCK-AUTH-INFO.md`
+
+---
+
+## 🚀 L'APPLICATION EST TESTABLE !
+
+```bash
+npm start
+```
+
+Puis scanner QR code avec Expo Go.
+
+**4 onglets fonctionnels :**
+- 🏠 Accueil → Affiche ComponentsDemo
+- 🔍 Rechercher → À implémenter (Phase 7)
+- ❤️ Favoris → À implémenter (Phase 9)
+- 👤 Compte → À implémenter (Phase 8)
+
+**Composants UI testables :**
+- Voir l'onglet Accueil pour la démo complète
+- Tous les composants sont fonctionnels
+
+---
+
+Dernière mise à jour : 26 Octobre 2025  
+Prochaine révision : Après Phase 6
+
+**Bon développement ! 💪**
