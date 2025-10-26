@@ -11,6 +11,7 @@ import SearchScreen from './src/screens/search/SearchScreen';
 import FavoritesScreen from './src/screens/favorites/FavoritesScreen';
 import AccountScreen from './src/screens/account/AccountScreen';
 import StructureDetailScreen from './src/screens/structure/StructureDetailScreen';
+import MapViewScreen from './src/screens/map';
 import { colors } from './src/config/theme';
 
 const Tab = createBottomTabNavigator();
@@ -77,6 +78,7 @@ export default function App() {
                     <Stack.Navigator screenOptions={{ headerShown: false }}>
                         <Stack.Screen name="Main" component={TabNavigator} />
                         <Stack.Screen name="StructureDetails" component={StructureDetailScreen} />
+                        <Stack.Screen name="MapView" component={MapViewScreen} />
                     </Stack.Navigator>
                 </NavigationContainer>
                 <StatusBar style="auto" />

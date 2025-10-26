@@ -11,7 +11,7 @@ import {
     RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
+import { useNavigation, CompositeNavigationProp, NavigationProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -232,13 +232,11 @@ export default function SearchScreen() {
                 </TouchableOpacity>
             )}
             {structures.length > 0 && !isLoading && (
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={[styles.fab, styles.fabMap]}
                     onPress={() => {
-                        const parent = navigation.getParent();
-                        if (parent) {
-                            parent.navigate('MapView', { structures });
-                        }
+                        // @ts-ignore - Navigation vers l'écran MapView du Stack parent
+                        navigation.navigate('MapView', { structures });
                     }}
                 >
                     <MaterialCommunityIcons name="map" size={24} color="#FFFFFF" />
