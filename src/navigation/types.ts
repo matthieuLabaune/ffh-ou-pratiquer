@@ -6,6 +6,8 @@ export type RootStackParamList = {
     StructureDetails: {
         structureId: string;
         structure?: Structure;  // Structure optionnelle passée directement
+        searchResults?: Structure[];  // Tableau complet pour le swipe
+        initialIndex?: number;  // Index de la structure actuelle
     };
     QuestionnaireStart: undefined;
     QuestionnaireResult: { submissionId: string };

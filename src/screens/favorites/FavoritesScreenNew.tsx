@@ -72,14 +72,16 @@ export default function FavoritesScreenNew() {
         }, 500);
     };
 
-    const handleStructurePress = (structure: Structure) => {
+    const handleStructurePress = (structure: Structure, index: number) => {
         // Navigate to root stack screen from nested tab navigator
-        // Passer la structure complète pour éviter un appel API supplémentaire
+        // Passer la structure complète ET le tableau pour le swipe
         const parent = navigation.getParent();
         if (parent) {
             parent.navigate('StructureDetails', {
                 structureId: structure.id,
-                structure: structure  // Passer la structure complète
+                structure: structure,  // Structure actuelle
+                searchResults: filteredFavorites,  // Tableau complet pour swipe
+                initialIndex: index  // Index de la structure cliquée
             });
         }
     };
@@ -92,10 +94,10 @@ export default function FavoritesScreenNew() {
         console.log('Navigation vers recherche');
     };
 
-    const renderStructureItem = ({ item }: { item: Structure }) => (
+    const renderStructureItem = ({ item, index }: { item: Structure; index: number }) => (
         <StructureCard
             structure={item}
-            onPress={handleStructurePress}
+            onPress={() => handleStructurePress(item, index)}
             onFavoritePress={handleRemoveFavorite}
         />
     );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
     View,
     Text,
@@ -6,6 +6,9 @@ import {
     ScrollView,
     TouchableOpacity,
     Linking,
+    FlatList,
+    useWindowDimensions,
+    ViewToken,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
@@ -23,26 +26,41 @@ type StructureDetailScreenNavigationProp = NativeStackNavigationProp<RootStackPa
 export default function StructureDetailScreen() {
     const route = useRoute<StructureDetailScreenRouteProp>();
     const navigation = useNavigation<StructureDetailScreenNavigationProp>();
-    const { structureId, structure: passedStructure } = route.params;
+    const { width: screenWidth } = useWindowDimensions();
+    const flatListRef = useRef<FlatList>(null);
 
-    const [structure, setStructure] = useState<Structure | null>(passedStructure || null);
-    const [isLoading, setIsLoading] = useState(!passedStructure); // Ne charge que si pas de structure passée
+    const {
+        structureId,
+        structure: passedStructure,
+        searchResults,
+        initialIndex = 0
+    } = route.params;
+
+    // Si on a searchResults, on utilise le mode swipe, sinon mode simple
+    const structures = searchResults || (passedStructure ? [passedStructure] : []);
+    const [currentIndex, setCurrentIndex] = useState(initialIndex);
+    const [isLoading, setIsLoading] = useState(!passedStructure && !searchResults);
     const [isFavorite, setIsFavorite] = useState(false);
+
+    const currentStructure = structures[currentIndex];
 
     useEffect(() => {
         // Charger uniquement si on n'a pas reçu la structure en paramètre
-        if (!passedStructure) {
+        if (!passedStructure && !searchResults) {
             loadStructure();
-        } else {
-            setIsFavorite(passedStructure.isFavorite || false);
+        } else if (currentStructure) {
+            setIsFavorite(currentStructure.isFavorite || false);
         }
-    }, [structureId, passedStructure]);
+    }, [structureId, passedStructure, searchResults, currentIndex]);
 
     const loadStructure = async () => {
         try {
             setIsLoading(true);
             const data = await structuresService.getById(structureId);
-            setStructure(data);
+            // Fallback pour mode sans swipe
+            if (!searchResults) {
+                structures[0] = data;
+            }
             setIsFavorite(data.isFavorite || false);
         } catch (error) {
             console.error('Erreur chargement structure:', error);
@@ -50,6 +68,16 @@ export default function StructureDetailScreen() {
             setIsLoading(false);
         }
     };
+
+    const onViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+        if (viewableItems.length > 0 && viewableItems[0].index !== null) {
+            setCurrentIndex(viewableItems[0].index);
+        }
+    }, []);
+
+    const viewabilityConfig = useRef({
+        itemVisiblePercentThreshold: 50
+    }).current;
 
     const toggleFavorite = () => {
         setIsFavorite(!isFavorite);
@@ -70,8 +98,8 @@ export default function StructureDetailScreen() {
     };
 
     const handleDirections = () => {
-        if (structure?.address.latitude && structure?.address.longitude) {
-            const url = `https://www.google.com/maps/dir/?api=1&destination=${structure.address.latitude},${structure.address.longitude}`;
+        if (currentStructure?.address.latitude && currentStructure?.address.longitude) {
+            const url = `https://www.google.com/maps/dir/?api=1&destination=${currentStructure.address.latitude},${currentStructure.address.longitude}`;
             Linking.openURL(url);
         }
     };
@@ -84,7 +112,7 @@ export default function StructureDetailScreen() {
         );
     }
 
-    if (!structure) {
+    if (!currentStructure) {
         return (
             <SafeAreaView style={styles.container}>
                 <Text>Structure non trouvée</Text>
@@ -92,32 +120,9 @@ export default function StructureDetailScreen() {
         );
     }
 
-    return (
-        <View style={styles.container}>
-            {/* Header */}
-            <SafeAreaView edges={['top']} style={styles.header}>
-                <View style={styles.headerContent}>
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerButton}>
-                        <MaterialCommunityIcons name="arrow-left" size={24} color="#FFFFFF" />
-                    </TouchableOpacity>
-                    <View style={styles.headerLogo}>
-                        <MaterialCommunityIcons name="wheelchair" size={20} color={colors.primary} />
-                    </View>
-                    <View style={styles.headerTitle}>
-                        <Text style={styles.titleHandi}>HANDI</Text>
-                        <Text style={styles.titleGo}>GO</Text>
-                    </View>
-                    <TouchableOpacity onPress={toggleFavorite} style={styles.headerButton}>
-                        <MaterialCommunityIcons
-                            name={isFavorite ? 'heart' : 'heart-outline'}
-                            size={24}
-                            color="#FFFFFF"
-                        />
-                    </TouchableOpacity>
-                </View>
-            </SafeAreaView>
-
-            {/* Contenu */}
+    // Composant de rendu pour une structure
+    const renderStructureDetail = ({ item: structure }: { item: Structure }) => (
+        <View style={{ width: screenWidth }}>
             <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
                 {/* Informations principales */}
                 <View style={styles.mainInfo}>
@@ -195,9 +200,9 @@ export default function StructureDetailScreen() {
                 )}
 
                 {/* Disciplines */}
-                {structure.disciplines.length > 0 && (
+                {structure.disciplines && structure.disciplines.length > 0 && (
                     <View style={styles.card}>
-                        <Text style={styles.cardTitle}>Disciplines proposées</Text>
+                        <Text style={styles.cardTitle}>Disciplines</Text>
                         <View style={styles.disciplinesContainer}>
                             {structure.disciplines.map((discipline) => (
                                 <DisciplineTag key={discipline.id} discipline={discipline.name} />
@@ -207,7 +212,7 @@ export default function StructureDetailScreen() {
                 )}
 
                 {/* Accessibilité */}
-                {structure.mobilities.length > 0 && (
+                {structure.mobilities && structure.mobilities.length > 0 && (
                     <View style={styles.card}>
                         <Text style={styles.cardTitle}>Accessibilité</Text>
                         {structure.mobilities.map((mobility) => (
@@ -229,6 +234,60 @@ export default function StructureDetailScreen() {
 
                 <View style={styles.bottomSpacing} />
             </ScrollView>
+        </View>
+    );
+
+    return (
+        <View style={styles.container}>
+            {/* Header */}
+            <SafeAreaView edges={['top']} style={styles.header}>
+                <View style={styles.headerContent}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerButton}>
+                        <MaterialCommunityIcons name="arrow-left" size={24} color="#FFFFFF" />
+                    </TouchableOpacity>
+                    <View style={styles.headerLogo}>
+                        <MaterialCommunityIcons name="wheelchair" size={20} color={colors.primary} />
+                    </View>
+                    <View style={styles.headerTitle}>
+                        <Text style={styles.titleHandi}>HANDI</Text>
+                        <Text style={styles.titleGo}>GO</Text>
+                    </View>
+                    <View style={styles.headerRightButtons}>
+                        {/* Indicateur de page si multiple structures */}
+                        {structures.length > 1 && (
+                            <Text style={styles.pageIndicator}>
+                                {currentIndex + 1}/{structures.length}
+                            </Text>
+                        )}
+                        <TouchableOpacity onPress={toggleFavorite} style={styles.headerButton}>
+                            <MaterialCommunityIcons
+                                name={isFavorite ? 'heart' : 'heart-outline'}
+                                size={24}
+                                color="#FFFFFF"
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </SafeAreaView>
+
+            {/* Contenu avec swipe si plusieurs structures */}
+            <FlatList
+                ref={flatListRef}
+                data={structures}
+                renderItem={renderStructureDetail}
+                keyExtractor={(item) => item.id}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                initialScrollIndex={initialIndex}
+                getItemLayout={(data, index) => ({
+                    length: screenWidth,
+                    offset: screenWidth * index,
+                    index,
+                })}
+                onViewableItemsChanged={onViewableItemsChanged}
+                viewabilityConfig={viewabilityConfig}
+            />
         </View>
     );
 }
@@ -390,5 +449,15 @@ const styles = StyleSheet.create({
     },
     bottomSpacing: {
         height: spacing.xl * 2,
+    },
+    headerRightButtons: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: spacing.sm,
+    },
+    pageIndicator: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: '#FFFFFF',
     },
 });

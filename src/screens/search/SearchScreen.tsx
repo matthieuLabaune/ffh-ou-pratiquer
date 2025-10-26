@@ -89,14 +89,16 @@ export default function SearchScreen() {
         setIsRefreshing(false);
     }, [handleSearch, searchQuery]);
 
-    const handleStructurePress = (structure: Structure) => {
+    const handleStructurePress = (structure: Structure, index: number) => {
         // Navigate to root stack screen from nested tab navigator
-        // Passer la structure complète pour éviter un appel API supplémentaire
+        // Passer la structure complète ET le tableau pour le swipe
         const parent = navigation.getParent();
         if (parent) {
             parent.navigate('StructureDetails', {
                 structureId: structure.id,
-                structure: structure  // Passer la structure complète
+                structure: structure,  // Structure actuelle
+                searchResults: structures,  // Tableau complet pour swipe
+                initialIndex: index  // Index de la structure cliquée
             });
         }
     };
@@ -183,8 +185,11 @@ export default function SearchScreen() {
                 ) : (
                     <FlatList
                         data={structures}
-                        renderItem={({ item }) => (
-                            <StructureCard structure={item} onPress={handleStructurePress} />
+                        renderItem={({ item, index }) => (
+                            <StructureCard
+                                structure={item}
+                                onPress={() => handleStructurePress(item, index)}
+                            />
                         )}
                         keyExtractor={(item) => item.id}
                         contentContainerStyle={styles.listContent}
