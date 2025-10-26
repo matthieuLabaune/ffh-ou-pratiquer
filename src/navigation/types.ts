@@ -3,7 +3,7 @@ import { Structure } from '@/models';
 export type RootStackParamList = {
     Main: undefined;
     Auth: undefined;
-    StructureDetails: { 
+    StructureDetails: {
         structureId: string;
         structure?: Structure;  // Structure optionnelle passée directement
     };

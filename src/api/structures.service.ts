@@ -79,12 +79,12 @@ class StructuresService {
         try {
             console.log('🌐 Récupération des détails de la structure:', `${this.endpoint}/structure/${id}`);
             const apiResponse = await apiClient.get<any>(`${this.endpoint}/structure/${id}`, { timeout: 15000 });
-            
+
             // L'API peut retourner { data: {...} } ou directement {...}
             const structureData = apiResponse.data?.data || apiResponse.data || apiResponse;
-            
+
             console.log('✅ Détails de la structure récupérés:', structureData.name);
-            
+
             // Utiliser le transformateur direct qui gère le format simple de l'API
             return transformDirectApiStructure(structureData);
         } catch (error: any) {

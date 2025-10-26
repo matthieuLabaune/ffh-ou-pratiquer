@@ -77,7 +77,7 @@ export default function FavoritesScreenNew() {
         // Passer la structure complète pour éviter un appel API supplémentaire
         const parent = navigation.getParent();
         if (parent) {
-            parent.navigate('StructureDetails', { 
+            parent.navigate('StructureDetails', {
                 structureId: structure.id,
                 structure: structure  // Passer la structure complète
             });
